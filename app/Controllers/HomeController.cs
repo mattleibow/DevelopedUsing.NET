@@ -9,8 +9,10 @@ namespace DevelopedUsingDotNet.Controllers
 			return View();
 		}
 
-		public IActionResult Error()
+		public IActionResult Error(int code)
 		{
+			ViewData.Add("Code", code);
+
 			return View();
 		}
 	}

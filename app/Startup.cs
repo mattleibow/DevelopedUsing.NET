@@ -1,4 +1,9 @@
+using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,13 +57,45 @@ namespace DevelopedUsingDotNet
 
 			if (env.IsDevelopment())
 			{
+				// dev exceptions
 				app.UseDeveloperExceptionPage();
 				app.UseBrowserLink();
 			}
 			else
 			{
+				// pretty exceptions
 				app.UseExceptionHandler("/Home/Error");
 			}
+
+			// errors (such a 404)
+			app.UseStatusCodePagesWithReExecute("/Home/Error", "?code={0}");
+
+			// specific case for json requests
+			app.UseStatusCodePages(new Func<StatusCodeContext, Task>(async context =>
+			{
+				if (context.HttpContext.Request.ContentType == "application/json")
+				{
+					var code = (HttpStatusCode)context.HttpContext.Response.StatusCode;
+					var msg = Encoding.UTF8.GetBytes(code.ToString());
+					await context.HttpContext.Response.Body.WriteAsync(msg, 0, msg.Length);
+				}
+				else
+				{
+					await context.Next(context.HttpContext);
+				}
+			}));
+			app.UseExceptionHandler(new ExceptionHandlerOptions
+			{
+				ExceptionHandler = async context =>
+				{
+					if (context.Request.ContentType == "application/json")
+					{
+						context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+						var msg = Encoding.UTF8.GetBytes("InternalServerError");
+						await context.Response.Body.WriteAsync(msg, 0, msg.Length);
+					}
+				}
+			});
 
 			app.UseApplicationInsightsExceptionTelemetry();
 
