@@ -53,6 +53,9 @@
   "frameworks": {
     "netcoreapp1.0": {
       "dependencies": {
+        "DevelopedUsingDotNet.Games.TowerOfHanoi": {
+          "target": "project"
+        },
         "DevelopedUsingDotNet.Tools.Randomization": {
           "target": "project"
         }
