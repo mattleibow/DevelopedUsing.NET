@@ -52,6 +52,11 @@
 
   "frameworks": {
     "netcoreapp1.0": {
+      "dependencies": {
+        "DevelopedUsingDotNet.Tools.Randomization": {
+          "target": "project"
+        }
+      },
       "imports": [
         "dotnet5.6",
         "dnxcore50",

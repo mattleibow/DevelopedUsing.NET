@@ -15,5 +15,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ApplicationInsightsResourceId>/subscriptions/7012318a-9f4e-4f4c-acd1-7cfa3a1a4192/resourcegroups/developedusingdotnet/providers/microsoft.insights/components/developedusingdotnet</ApplicationInsightsResourceId>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DevelopedUsingDotNet.Tools.Randomization\DevelopedUsingDotNet.Tools.Randomization.csproj" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\DotNet.Web\Microsoft.DotNet.Web.targets" Condition="'$(VSToolsPath)' != ''" />
 </Project>
